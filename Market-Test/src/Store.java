@@ -1,44 +1,55 @@
 public class Store {
-    private Long storeId;
-    private String storeName,owner;
-    private int revenue;
+    private String name, location;
+    private int floor;
+    private int capacity;
 
-    public Long getStoreId() {
-        return storeId;
+    private Store(StoreBuilder builder) {
+        this.name = builder.name;
+        this.location = builder.location;
+        this.floor = builder.floor;
+        this.capacity = builder.capacity;
     }
 
-    public void setStoreId(Long storeId) {
-        this.storeId = storeId;
+    public String getName() {
+        return name;
     }
 
-    public String getStoreName() {
-        return storeName;
+    public String getLocation() {
+        return location;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
+    public int getFloor() {
+        return floor;
     }
 
-    public String getOwner() {
-        return owner;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
+    public static class StoreBuilder {
+        private String name;
+        private String location;
+        private int floor;
+        private int capacity;
 
-    public int getRevenue() {
-        return revenue;
-    }
+        public StoreBuilder(String name, String location) {
+            this.name = name;
+            this.location = location;
+        }
 
-    public void setRevenue(int revenue) {
-        this.revenue = revenue;
-    }
+        public StoreBuilder setFloor(int floor) {
+            this.floor = floor;
+            return this;
+        }
 
-    public Store(Long storeId, String storeName, String owner, int revenue) {
-        this.storeId = storeId;
-        this.storeName = storeName;
-        this.owner = owner;
-        this.revenue = revenue;
+        public StoreBuilder setCapacity(int capacity) {
+            this.capacity = capacity;
+            return this;
+        }
+
+        public Store build() {
+            return new Store(this);
+        }
     }
 }
+
