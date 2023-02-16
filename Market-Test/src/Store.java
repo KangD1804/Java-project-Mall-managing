@@ -1,3 +1,4 @@
+/*
 public class Store {
     private String name, location;
     private int floor;
@@ -53,3 +54,27 @@ public class Store {
     }
 }
 
+*/
+public class Store {
+    private String name, location;
+    private int floor;
+
+
+    public Store(String name,int floor, String location) {
+        this.name = name;
+        this.location = location;
+        this.floor = floor;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+}
