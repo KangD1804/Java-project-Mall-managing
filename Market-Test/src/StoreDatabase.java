@@ -1,3 +1,5 @@
+import Store.Store;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -8,7 +10,6 @@ public class StoreDatabase {
     private Map<Integer, Set<Store>> storesByFloor;
 
     private StoreDatabase() {
-        // Initialize the map of stores by floor
         storesByFloor = new HashMap<>();
     }
 
@@ -22,7 +23,6 @@ public class StoreDatabase {
     public void addStore(Store store) {
         if(storeList.size() > 0){
             for (int i =0; i < storeList.size(); i++) { //Concurent modification exception neu xai for each
-//                String storeName = store.getName();
                 if (!storeExisted.contains(store.getName())) {
                     storeList.add(store);
                     int floor = store.getFloor();
@@ -42,11 +42,12 @@ public class StoreDatabase {
             storesByFloor.put(floor, storesOnFloor);
         }
     }
-    public void removeStore(Store store){ //try cactch hay if else
+
+    public void removeStore(Store store){
         if(storeList.contains(store)){
             storeList.remove(store);
         } else {
-            System.out.println("Store not exist.");
+            System.out.println("Store.Store not exist.");
         }
     }
 
@@ -55,14 +56,28 @@ public class StoreDatabase {
         return storesByFloor.getOrDefault(floor, new HashSet<>());
     }
 
+/*
     public void writeStoreListToFile(String filename) {
         try (FileWriter writer = new FileWriter(filename)) {
-            for (Store store : storeList) {
+            for (Store.Store store : storeList) {
                 writer.write(store.getName() + "," + store.getFloor() + "," + "\n");
             }
         } catch (IOException e) {
             System.out.println("Something wrong happened!");
         }
+    }
+*/
+    public int getTotalArea() {
+    int totalArea = 0;
+    for (Store store : storeList) {
+        totalArea += store.getArea();
+    }
+    return totalArea;
+    }
+
+    public double calculateTotalRent(double ratePerUnitArea) {
+        double totalRent = getTotalArea() * ratePerUnitArea;
+        return totalRent;
     }
 
     public void exportStoreList(String filename) {
@@ -84,6 +99,28 @@ public class StoreDatabase {
                 }
             }
         }
+    }
+    public void exportRentList(String filename) {
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(filename);
+            for (Store store : storeList) {
+                fileWriter.write(store.getName() + "," + " is paying " + "," +"\n");
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
+
+
 }
