@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.util.*;
 public class StoreDatabase {
     private static StoreDatabase instance = null;
-    private Set<Store> storeList = new HashSet<>();
-    private Set<String> storeExisted = new HashSet<>();
+    private Set<Store> storeList;
+    private Set<String> storeExisted;
     private Map<Integer, Set<Store>> storesByFloor;
 
     private StoreDatabase() {
         storesByFloor = new HashMap<>();
+        storeList = new HashSet<>();
+        storeExisted = new HashSet<>();
     }
 
     public static StoreDatabase getInstance() {
@@ -20,7 +22,7 @@ public class StoreDatabase {
         return instance;
     }
 
-    public void addStore(Store store) {
+    public void addNewStore(Store store) {
         if(storeList.size() > 0){
             for (int i =0; i < storeList.size(); i++) { //Concurent modification exception neu xai for each
                 if (!storeExisted.contains(store.getName())) {
@@ -41,6 +43,16 @@ public class StoreDatabase {
             storesOnFloor.add(store);
             storesByFloor.put(floor, storesOnFloor);
         }
+    }
+
+    public Store addStore(Store store) {
+        storeList.add(store);
+        storeExisted.add(store.getName());
+        int floor = store.getFloor();
+        Set<Store> storesOnFloor = storesByFloor.getOrDefault(floor, new HashSet<>());
+        storesOnFloor.add(store);
+        storesByFloor.put(floor, storesOnFloor);
+        return store;
     }
 
     public void removeStore(Store store){
@@ -73,8 +85,7 @@ public class StoreDatabase {
         try {
             fileWriter = new FileWriter(filename);
             for (Store store : storeList) {
-                fileWriter.write(store.getName() + "," + store.getFloor() + "," +"\n");
-
+                fileWriter.write(store.getName() + " at floor " + store.getFloor() + " at " + store.getLocation() +"\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,7 +105,7 @@ public class StoreDatabase {
         try {
             fileWriter = new FileWriter(filename);
             for (Store store : storeList) {
-                fileWriter.write(store.getName() + "," + " is paying " + store.calculateRent(150.0) +"\n");
+                fileWriter.write(store.getName() + "at floor " + store.getFloor() + " is paying " + store.calculateRent(150.0) +"\n");
             }
             fileWriter.write("Total income from store: " +this.calculateTotalRent(150.0));
         } catch (IOException e) {

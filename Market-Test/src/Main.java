@@ -3,7 +3,7 @@ import Employee.*;
 
 public class Main {
     public static void main(String[] args) {
-        Store BookStore = new Store.StoreBuilder("Tiệm sách", "Nguyễn Văn Trỗi")
+        Store Fahasa = new Store.StoreBuilder("FAHASA", "Nguyễn Văn Trỗi")
                 .setFloor(1)
                 .setCapacity(40)
                 .setRent(1000)
@@ -13,31 +13,31 @@ public class Main {
                 .setCapacity(40)
                 .setRent(1000)
                 .build();
-        Store BookStore2 = new Store.StoreBuilder("Tiệm sách", "Nguyễn Văn Trỗi")
+        Store Electronics = new Store.StoreBuilder("Tiệm đồ điện", "Nam Kì Khởi Nghĩa")
+                .setFloor(2)
+                .setCapacity(40)
+                .setRent(1000)
+                .build();
+        Store DMX = new Store.StoreBuilder("Điện Máy Xanh", "Nam Kì Khởi Nghĩa")
+                .setFloor(2)
+                .setCapacity(40)
+                .setRent(1000)
+                .build();
+        Store TGDD = new Store.StoreBuilder("Thế Giới Di Động", "Nam Kì Khởi Nghĩa")
+                .setFloor(2)
+                .setCapacity(40)
+                .setRent(1000)
+                .build();
+        Store PNC = new Store.StoreBuilder("Nhà Sách Phương Nam", "Nguyễn Văn Trỗi")
                 .setFloor(1)
                 .setCapacity(40)
                 .setRent(1000)
                 .build();
-/*        Store BookStore = new Store.StoreBuilder("Tiệm sách", "Nguyễn Văn Trỗi")
-                .setFloor(1)
-                .setCapacity(40)
-                .setRent(1000)
-                .build();
-        Store BookStore = new Store.StoreBuilder("Tiệm sách", "Nguyễn Văn Trỗi")
-                .setFloor(1)
-                .setCapacity(40)
-                .setRent(1000)
-                .build();Store BookStore = new Store.StoreBuilder("Tiệm sách", "Nguyễn Văn Trỗi")
-                .setFloor(1)
-                .setCapacity(40)
-                .setRent(1000)
-                .build();*/
+
 
         // Create a new store database
         StoreDatabase storeDatabase = StoreDatabase.getInstance();
-        storeDatabase.addStore(BookStore);
-        storeDatabase.addStore(BookStore2);
-        storeDatabase.addStore(FoodCourt);
+
         // Write the store list to a file
         storeDatabase.exportStoreList("store_data.txt");
         storeDatabase.exportRentList("store_rent_data.txt");

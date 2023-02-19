@@ -81,7 +81,10 @@ public class Store {
         }
 
         public Store build() {
-            return new Store(this);
+            Store newStore = new Store(this);
+            StoreDatabase storeDatabase = StoreDatabase.getInstance();
+            storeDatabase.addStore(newStore);
+            return newStore;
         }
     }
 }
