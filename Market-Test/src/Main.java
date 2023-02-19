@@ -42,8 +42,8 @@ public class Main {
         storeDatabase.exportStoreList("store_data.txt");
         storeDatabase.exportRentList("store_rent_data.txt");
         System.out.println(storeDatabase.getStoresOnFloor(1).toString());
-/*        Employee fullTimeEmployee = EmployeeFactory.createEmployee("fulltime", "Chinh Pham", "It", 50000);
-        Employee partTimeEmployee = EmployeeFactory.createEmployee("parttime", "Khang Doan", "IT", 25, 20);*/
+      Employee fullTimeEmployee = EmployeeFactory.createEmployee("fulltime", "Chinh Pham", "It", 50000);
+        Employee partTimeEmployee = EmployeeFactory.createEmployee("parttime", "Khang Doan", "IT", 25, 20);
 
     }
 }
