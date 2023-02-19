@@ -11,6 +11,7 @@ public class Store {
         this.location = builder.location;
         this.floor = builder.floor;
         this.capacity = builder.capacity;
+        this.rent = builder.rent;
     }
 
     public String getName() {
@@ -39,6 +40,17 @@ public class Store {
 
     public double calculateRent(double ratePerUnitArea){
         return this.getArea()*ratePerUnitArea;
+    }
+
+    @Override
+    public String toString() {
+        return "Store {" +
+                " name ='" + name + '\'' +
+                ", location ='" + location + '\'' +
+                ", floor =" + floor +
+                ", capacity =" + capacity +
+                ", rent =" + rent +
+                '}';
     }
 
     public static class StoreBuilder {

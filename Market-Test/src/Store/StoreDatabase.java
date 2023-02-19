@@ -1,4 +1,4 @@
-import Store.Store;
+package Store;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,21 +52,9 @@ public class StoreDatabase {
     }
 
     public Set<Store> getStoresOnFloor(int floor) {
-        // Get the set of stores on the given floor
         return storesByFloor.getOrDefault(floor, new HashSet<>());
     }
 
-/*
-    public void writeStoreListToFile(String filename) {
-        try (FileWriter writer = new FileWriter(filename)) {
-            for (Store.Store store : storeList) {
-                writer.write(store.getName() + "," + store.getFloor() + "," + "\n");
-            }
-        } catch (IOException e) {
-            System.out.println("Something wrong happened!");
-        }
-    }
-*/
     public int getTotalArea() {
     int totalArea = 0;
     for (Store store : storeList) {
@@ -100,14 +88,15 @@ public class StoreDatabase {
             }
         }
     }
+
     public void exportRentList(String filename) {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(filename);
             for (Store store : storeList) {
-                fileWriter.write(store.getName() + "," + " is paying " + "," +"\n");
-
+                fileWriter.write(store.getName() + "," + " is paying " + store.calculateRent(150.0) +"\n");
             }
+            fileWriter.write("Total income from store: " +this.calculateTotalRent(150.0));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -121,6 +110,5 @@ public class StoreDatabase {
         }
 
     }
-
 
 }
