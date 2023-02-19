@@ -105,7 +105,7 @@ public class StoreDatabase {
         try {
             fileWriter = new FileWriter(filename);
             for (Store store : storeList) {
-                fileWriter.write(store.getName() + "at floor " + store.getFloor() + " is paying " + store.calculateRent(150.0) +"\n");
+                fileWriter.write(store.getName() + " at floor " + store.getFloor() + " is paying " + store.calculateRent(150.0) +"\n");
             }
             fileWriter.write("Total income from store: " +this.calculateTotalRent(150.0));
         } catch (IOException e) {

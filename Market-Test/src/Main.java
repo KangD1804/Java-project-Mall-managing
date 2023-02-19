@@ -42,8 +42,8 @@ public class Main {
 
         StoreDatabase storeDatabase = StoreDatabase.getInstance();
 
-/*        storeDatabase.exportStoreList("store_data.txt");
-        storeDatabase.exportRentList("store_rent_data.txt");*/
+        storeDatabase.exportStoreList("store_data.txt");
+        storeDatabase.exportRentList("store_rent_data.txt");
 
         Employee ChinhPham = EmployeeFactory.createEmployee("fulltime", "Chinh Pham", "It", "motorbike",true,3000);
         Employee DuongPham = EmployeeFactory.createEmployee("fulltime", "Duong Pham", "CEO/COO??","car",true, 5000);
@@ -58,8 +58,9 @@ public class Main {
         Employee ThanhNguyen = EmployeeFactory.createEmployee("parttime", "Thanh Nguyen", "IT", "car",true,25, 20);
 
         EmployeeDatabase employeeDatabase = EmployeeDatabase.getInstance();
-/*        employeeDatabase.exportSalaryFullTime("fulltime_salary.txt");
-        employeeDatabase.exportSalaryPartTime("parttime_salary.txt");*/
+
+        employeeDatabase.exportSalaryFullTime("fulltime_salary.txt");
+        employeeDatabase.exportSalaryPartTime("parttime_salary.txt");
         System.out.println(ParkingSlotFactory.getEmployeeCount());
 
         employeeDatabase.exportParkingInfo("parking_info.txt");
