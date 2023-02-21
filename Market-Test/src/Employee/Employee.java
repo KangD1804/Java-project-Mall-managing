@@ -3,6 +3,7 @@ package Employee;
 public abstract class Employee {
     private String name;
     private String department;
+    private String vehicle;
 
     public Employee(String name, String department) {
         this.name = name;
@@ -18,4 +19,10 @@ public abstract class Employee {
     }
 
     public abstract int calculateSalary();
+
+    public String getVehicle() {
+        return vehicle;
+    }
+
+    public abstract boolean isRegisteredParkingSlot();
 }

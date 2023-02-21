@@ -45,11 +45,11 @@ public class Store {
     @Override
     public String toString() {
         return "Store {" +
-                " name ='" + name + '\'' +
-                ", location ='" + location + '\'' +
-                ", floor =" + floor +
-                ", capacity =" + capacity +
-                ", rent =" + rent +
+                " name = '" + name + '\'' +
+                ", location = '" + location + '\'' +
+                ", floor = " + floor +
+                ", capacity = " + capacity +
+                ", rent = " + rent +
                 '}';
     }
 
@@ -89,27 +89,4 @@ public class Store {
     }
 }
 
-/*
-public class Store.Store {
-    private String name, location;
-    private int floor;
 
-
-    public Store.Store(String name,int floor, String location) {
-        this.name = name;
-        this.location = location;
-        this.floor = floor;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-}*/

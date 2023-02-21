@@ -5,14 +5,10 @@ import java.io.IOException;
 import java.util.*;
 public class StoreDatabase {
     private static StoreDatabase instance = null;
-    private Set<Store> storeList;
-    private Set<String> storeExisted;
-    private Map<Integer, Set<Store>> storesByFloor;
+    private static Set<Store> storeList;
 
     private StoreDatabase() {
-        storesByFloor = new HashMap<>();
         storeList = new HashSet<>();
-        storeExisted = new HashSet<>();
     }
 
     public static StoreDatabase getInstance() {
@@ -22,37 +18,27 @@ public class StoreDatabase {
         return instance;
     }
 
-    public void addNewStore(Store store) {
-        if(storeList.size() > 0){
-            for (int i =0; i < storeList.size(); i++) { //Concurent modification exception neu xai for each
-                if (!storeExisted.contains(store.getName())) {
-                    storeList.add(store);
-                    int floor = store.getFloor();
-                    Set<Store> storesOnFloor = storesByFloor.getOrDefault(floor, new HashSet<>()); //loai kha nang bi null pointer exception neu tang do chua co trong map
-                    storesOnFloor.add(store);
-                    storesByFloor.put(floor, storesOnFloor);
-                } else {
-                    System.out.println("store name: " +store.getName() +" is added/existed");
-                }
+    public boolean checkStoreExistence(Store store){
+        for(Store storeExisted : storeList){
+            if(store.getName().equalsIgnoreCase(storeExisted.getName())){
+                return true;
             }
-        }else {
-            storeList.add(store);
-            storeExisted.add(store.getName());
-            int floor = store.getFloor();
-            Set<Store> storesOnFloor = storesByFloor.getOrDefault(floor, new HashSet<>());
-            storesOnFloor.add(store);
-            storesByFloor.put(floor, storesOnFloor);
         }
+        return false;
     }
 
-    public Store addStore(Store store) {
-        storeList.add(store);
-        storeExisted.add(store.getName());
-        int floor = store.getFloor();
-        Set<Store> storesOnFloor = storesByFloor.getOrDefault(floor, new HashSet<>());
-        storesOnFloor.add(store);
-        storesByFloor.put(floor, storesOnFloor);
-        return store;
+    public void addStore(Store store) {
+        try {
+            if(storeList.size() > 0){
+                if(checkStoreExistence(store)) {
+                    throw new Exception();
+                } else {storeList.add(store);}
+            }else{
+                storeList.add(store);
+            }
+        }catch (Exception e){
+            System.out.println(store.getName()+ " is added/existed");
+        }
     }
 
     public void removeStore(Store store){
@@ -64,7 +50,13 @@ public class StoreDatabase {
     }
 
     public Set<Store> getStoresOnFloor(int floor) {
-        return storesByFloor.getOrDefault(floor, new HashSet<>());
+        Set<Store> storesOnFloor = new HashSet<>();
+        for(Store store : storeList){
+            if(store.getFloor() == floor){
+                storesOnFloor.add(store);
+            }
+        }
+        return storesOnFloor;
     }
 
     public int getTotalArea() {
@@ -80,10 +72,11 @@ public class StoreDatabase {
         return totalRent;
     }
 
-    public void exportStoreList(String filename) {
+    public void exportStoreList() {
+        String filePath = "./store_data.txt";
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(filename);
+            fileWriter = new FileWriter(filePath);
             for (Store store : storeList) {
                 fileWriter.write(store.getName() + " at floor " + store.getFloor() + " at " + store.getLocation() +"\n");
             }
@@ -100,10 +93,11 @@ public class StoreDatabase {
         }
     }
 
-    public void exportRentList(String filename) {
+    public void exportRentList() {
+        String filePath = "./store_rent_data.txt";
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(filename);
+            fileWriter = new FileWriter(filePath);
             for (Store store : storeList) {
                 fileWriter.write(store.getName() + " at floor " + store.getFloor() + " is paying " + store.calculateRent(150.0) +"\n");
             }

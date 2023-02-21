@@ -2,18 +2,14 @@ package Employee;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class EmployeeDatabase {
     private static EmployeeDatabase instance = null;
-    private List<PartTimeEmployee> partTimeEmployeeList;
-    private List<FullTimeEmployee> fullTimeEmployeeList;
+    private static Set<Employee> employees;
 
     private EmployeeDatabase(){
-        fullTimeEmployeeList = new ArrayList<>();
-        partTimeEmployeeList = new LinkedList<>();
+        employees = new HashSet<>();
     }
 
     public static EmployeeDatabase getInstance(){
@@ -22,59 +18,60 @@ public class EmployeeDatabase {
         }
         return instance;
     }
-
-    public void addPartTimeEmployee(PartTimeEmployee employee){
-        partTimeEmployeeList.add(employee);
-    }
-
-    public void addFullTimeEmployee(FullTimeEmployee employee){
-        fullTimeEmployeeList.add(employee);
+    public void addEmployee(Employee employee){
+        employees.add(employee);
     }
 
     public void removeEmployee(Employee employee){
-        if(employee instanceof FullTimeEmployee){
-            fullTimeEmployeeList.remove(employee);
-        } else partTimeEmployeeList.remove(employee);
+        employees.remove(employee);
     }
 
     public int calculateTotalSalary(){
         int totalSalary = 0;
-        for(Employee employee : partTimeEmployeeList){
-            totalSalary += employee.calculateSalary();
-        }
-        for (Employee employee : fullTimeEmployeeList){
-            totalSalary+= employee.calculateSalary();
+        for(Employee employee : employees){
+            if(employee instanceof PartTimeEmployee){
+                totalSalary+= employee.calculateSalary();
+            }else {
+                totalSalary+= employee.calculateSalary();
+            }
         }
         return totalSalary;
     }
 
-    public double calculateCarPark(){
+    public double calculateCarPark() {
         double carFee = 0;
-        for (FullTimeEmployee employee : fullTimeEmployeeList){
-            if(employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("Car")){
-                carFee += 30;
+        for (Employee employee : employees) {
+            if (employee instanceof FullTimeEmployee) {
+                if (employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("Car")) {
+                    carFee += 30;
+                }
             }
         }
         return carFee;
     }
     public double calculateBikePark(){
         double bikeFee = 0;
-        for (FullTimeEmployee employee : fullTimeEmployeeList){
-            if(employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("motorbike")){
-                bikeFee += 10;
+        for (Employee employee : employees) {
+            if (employee instanceof FullTimeEmployee) {
+                if (employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("Motorbike")) {
+                    bikeFee += 30;
+                }
             }
         }
         return bikeFee;
     }
 
-    public void exportSalaryPartTime(String filename) {
+    public void exportSalaryPartTime() {
+        String filePath = "./parttime_salary.txt";
         FileWriter fileWriter = null;
         try {
             double total = 0;
-            fileWriter = new FileWriter(filename);
-            for (Employee employee : partTimeEmployeeList ) {
-                total += employee.calculateSalary();
-                fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " : " + employee.calculateSalary()+"\n");
+            fileWriter = new FileWriter(filePath);
+            for (Employee employee : employees) {
+                if(employee instanceof PartTimeEmployee){
+                    total += employee.calculateSalary();
+                    fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " : " + employee.calculateSalary()+"\n");
+                }
             }
             fileWriter.write("Total full time salaries: " +total);
 
@@ -91,14 +88,17 @@ public class EmployeeDatabase {
         }
     }
 
-    public void exportSalaryFullTime(String filename) {
+    public void exportSalaryFullTime() {
+        String filePath = "./fulltime_salary_data.txt";
         FileWriter fileWriter = null;
         try {
             double total = 0;
-            fileWriter = new FileWriter(filename);
-            for (Employee employee : fullTimeEmployeeList ) {
-                total += employee.calculateSalary();
-                fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " : " + employee.calculateSalary()+"\n");
+            fileWriter = new FileWriter(filePath);
+            for (Employee employee : employees) {
+                if (employee instanceof FullTimeEmployee) {
+                    total += employee.calculateSalary();
+                    fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " : " + employee.calculateSalary() +" (rest "+((FullTimeEmployee) employee).getRestDay()+" day(s))" +"\n");
+                }
             }
             fileWriter.write("Total full time salaries: " +total);
         } catch (IOException exception) {
@@ -114,15 +114,20 @@ public class EmployeeDatabase {
         }
     }
 
-    public void exportParkingInfo(String filename){
+    public void exportParkingInfo(){
+        String filePath = "./parking_data.txt";
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(filename);
-            for (FullTimeEmployee employee : fullTimeEmployeeList ) {
-                if(employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("motorbike")) {
-                    fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " drive " + employee.getVehicle() + " pay " + "10$ for parking." + "\n");
-                } else if(employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("car")){
-                    fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " drive " + employee.getVehicle() + " pay " + "30& for parking." + "\n");
+            fileWriter = new FileWriter(filePath);
+            for (Employee employee : employees) {
+                if(employee instanceof FullTimeEmployee) {
+                    if (employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("motorbike")) {
+                        fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " drives " + employee.getVehicle() + " pay 10$ for parking." + "\n");
+                    } else if (employee.isRegisteredParkingSlot() && employee.getVehicle().equalsIgnoreCase("car")) {
+                        fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " drives " + employee.getVehicle() + " pay 30& for parking." + "\n");
+                    }
+                } else {
+                    fileWriter.write(employee.getName() + " working at " + employee.getDepartment() + " drives " + employee.getVehicle() + " is parking for free" + "\n");
                 }
             }
             fileWriter.write("Total motorbike parking slots revenue from employee: " +this.calculateBikePark() +"\n");
